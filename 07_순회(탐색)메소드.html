@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>07_순회(탐색)메소드</title>
+
+     <!-- <title> 아래 CDN 방식으로  jQuery Library script 추가 -->
+        <script src="https://code.jquery.com/jquery-3.6.0.js" 
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+        crossorigin="anonymous"></script>
+    
+    <style>
+        /* 06 style에서 wrap하나 더 추가 */
+        .wrap, .wrap * {
+            border: 1px solid lightgray;
+            display: block;
+            padding: 5px;
+            margin: 15px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>순회(탐색) 메서드</h1>
+    <h3>
+        sideways(옆으로, 옆에서) 메소드
+        같은 레벨에 있는 요소(형제)를 선택할 수 있는 메소드
+    </h3>
+    <pre>
+        <!-- $('요소명').sibblings([매개변수]).css(); -->
+        <!-- next = 동생 -->
+        $('요소명').siblings([매개변수])
+        - 선택된 요소와 같은 레벨(형제)에 있는 모든 요소(s,all) 리턴
+        - 매개변수가 있으면 같은 레벨에 있는 요소 중 매개변수와 일치하는 모든 요소 리턴
+
+        $('요소명').next()
+        - 선택된 요소의 같은 레벨 중 선택된 요소 다음 한 개 요소 리턴
+
+        $('요소명').nextAll()
+        - 선택된 요소의 같은 레벨 중 선택된 요소 다음 모든 요소(s,all) 리턴
+
+        $('요소명').nextUntil(매개변수)
+        - 선택된 요소의 같은 레벨 중 매개변수 이전 까지의 모든 요소 리턴
+
+        <!-- next, prev, -->
+        <!-- prev = 형 -->
+        $('요소명').prev()
+        - 선택된 요소의 같은 레벨 중 선택된 요소 다음 한 개 요소 리턴
+
+        $('요소명').prevAll()
+        - 선택된 요소의 같은 레벨 중 선택된 요소 다음 모든 요소(s,all) 리턴
+
+        $('요소명').prevUntil(매개변수)
+        - 선택된 요소의 같은 레벨 중 매개변수 이전 까지의 모든 요소 리턴
+    </pre>
+
+    <div class="wrap"> div (parent)
+        <p>p</p>
+        <span>span</span>
+        <h2>h2</h2>
+        <h3>h3</h3>
+        <p>p</p>
+    </div>
+
+    <ul>
+        <p>p태그</p>
+        <li>li1</li>
+        <li>li2</li>
+        <li class="prevTest">li3</li>
+        <li>li4</li>
+        <li>li5</li>
+        <p>p태그</p>
+    </ul>
+    
+    <span>테스트용 span 태그</span>
+    <h2>테스트용 h2 태그</h2>
+</body>
+
+<script>
+    const style1 = {"border":"2px solid red","color":"red"};
+    const style2 = {"border":"2px solid red","color":"orange"};
+    const style3 = {"border":"2px solid red","color":"yellow"};
+    const style4 = {"border":"2px solid red","color":"green"};
+    const style5 = {"border":"2px solid red","color":"blue"};
+
+    // sibling() : 선택한 요소의 형제 요소를 모두 선택
+    // 1. h2 태그의 형제 요소의 스타일로  style1을 설정
+    $("h2").siblings().css(style1);
+
+    // 2. h2 태그의 형제 요소중 p태그만 스타일로 style2을 설정
+    $("h2").siblings('p').css(style2);
+
+    // next() : 선택된 요소의 다음 형제 요소를 선택하는 메서드
+    // 3. span 태그 다음 형제 요소의 스타일을 style3으로 설정
+    $("span").next().css(style3);
+
+    // nextAll() : 선택된 요소의 다음 형제 [모든] 요소를 선택하는 메서드
+    // 4. h2 태그 다음에 오는 모든 형제 요소 스타일을 style4로 설정
+    $("h2").nextAll().css(style4);
+
+    //  < prev = 형 , next = 동생 >
+    $(".prevTest").prevUntil("p").css("fontSize","50px");
+    $(".prevTest").nextUntil("p").css("fontSize","10px");
+        
+    // is("css선택자")
+    // 지정된 범위 내 매개변수로 지정된 선택자와 일치하는 요소가
+    // 존재하는지 확인하는 메서드 is("boolean")
+    // (존재 true, 없음 false)
+
+    // h2 태그 이전에 있는 모든 형제 요소중 p태그가 있는지 확인해라
+    console.log( $("h2").prevUntil().is("p") );
+    console.log( $("h2").prevUntil().is("pre") );
+
+    $("span").on("click", function() {
+        console.log("span 태그 클릭됨")
+
+        console.log($(this));
+        console.log(this);
+
+        // 이벤트 핸들러 ( 이벤트 발생 시, 동작을 지정하는 함수 )
+        // 내부에 작성된 this라는 단어는
+        // 이벤트가 발생한 요소를 나타낸다. ( javaScript 기준 시점 )
+
+    });
+
+    // jQuery에서
+    // h2 태그를 클릭했을 때,
+    // 클릭한 요소 이전 요소 (html상 테스트용 span태그)의
+    //  배경색 red / 글자 white로 설정
+    $("h2").on("click", function() {
+   
+
+    // $(this) : 이벤트 발생한 요소 선택
+    console.log( $(this).prev() );
+    $(this).prev().css({"backgroundColor" : "red" , "color" : "white"})
+
+    })
+
+
+
+</script>
+</html>
